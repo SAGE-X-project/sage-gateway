@@ -76,7 +76,7 @@ func TestSignedRequestPassesAndResponseIsVerified(t *testing.T) {
 	if err != nil {
 		t.Fatalf("request failed: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	got, _ := io.ReadAll(resp.Body)
 	if resp.StatusCode != 200 || !strings.Contains(string(got), `"echo":`+body) {
 		t.Fatalf("status %d body %s", resp.StatusCode, got)
